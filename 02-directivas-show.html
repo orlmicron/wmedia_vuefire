@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <title>Data Binding</title>
+</head>
+<body>
+  <main>
+    <h1 id="title" v-show="activo">{{ mensaje }}</h1>
+    <input id="input" type="text" v-model="mensaje" >
+    <pre>
+      {{ $data }}
+    </pre>
+
+  </main>
+  <script>
+    // let title = document.getElementById("title");
+    // let input = document.getElementById("input");
+    // document.addEventListener("keyup", () => title.innerText = input.value );
+  const vm = new Vue({
+    el: "main",
+    data: {
+      activo: true,
+      mensaje: "Hola mundo"
+    }
+
+  });
+  </script>
+</body>
+</html>

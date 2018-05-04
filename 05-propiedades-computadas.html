@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <title>Data Binding</title>
+</head>
+<body>
+  <main>
+    <h2>Tareas Prioritarias</h2>
+    <ul v-for="tarea in tareasPorAntiguedad">
+      <li>{{ tarea.titulo }}</li>
+    </ul>
+    <form v-on:submit.prevent="agregarTarea">
+      <input type="text" v-model="nuevaTarea.titulo" placeholder="titulo">
+      <label>
+        Prioritaria
+        <input type="checkbox" v-model="nuevaTarea.prioridad" name="prioridad">
+      </label>
+      <input type="number" placeholder="prioridad" v-model="nuevaTarea.antiguedad">
+      <input type="submit" value="Agregar">
+
+    </form>
+    <p>{{ mensajeAlReves }}</p>
+    <pre>{{ $data }}</pre>
+  </main>
+  <script>
+   
+  const vm = new Vue({
+    el: "main",
+    data: {
+      tareas: [
+      {
+        titulo: "aprender VueJS",
+        prioridad: true,
+        antiguedad: 26
+      },
+      {
+        titulo: "aprender PHP7",
+        prioridad: false,
+        antiguedad: 15
+      },
+      {
+        titulo: "aprender Django",
+        prioridad: true,
+        antiguedad: 33
+      }],
+      nuevaTarea: {
+        titulo: '',
+        prioridad: false,
+        antiguedad: 0
+
+      },
+      mensaje: "Hola mundo"
+    },
+    methods: {
+      agregarTarea() {
+        this.tareas.push(this.nuevaTarea);
+      }
+    },
+    computed: {
+      mensajeAlReves() {
+        return this.mensaje.split("").reverse().join("");
+      },
+      tareasConPrioridad() {
+        return this.tareas.filter((tarea) => tarea.prioridad);
+
+      },
+      tareasPorAntiguedad() {
+        return this.tareas.sort((a, b) => a.antiguedad <= b.antiguedad)
+      }
+    }
+
+  });
+  </script>
+</body>
+</html>

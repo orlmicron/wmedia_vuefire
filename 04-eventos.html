@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <title>Data Binding</title>
+</head>
+<body>
+  <main>
+    <ul v-for="tarea in tareas">
+      <li>{{ tarea }}</li>
+    </ul>
+    <form v-on:submit.prevent="agregarTarea">
+      <input type="text" v-model="nuevaTarea">
+      <input type="submit" value="Agregar">
+
+    </form>
+
+    <pre>{{ $data }}</pre>
+  </main>
+  <script>
+   
+  const vm = new Vue({
+    el: "main",
+    data: {
+      tareas: [
+        "Preparar almuerzo",
+        "Bañar al perro",
+        "Leer un libro",
+        "Estudiar"
+      ],
+      nuevaTarea: ''
+    },
+    methods: {
+      agregarTarea(algo) {
+        console.log("Funciona");
+        console.log(algo);
+        this.tareas.push(this.nuevaTarea);
+        this.nuevaTarea = '';
+        
+      }
+    }
+
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <title>Data Binding</title>
+</head>
+<body>
+  <main>
+    <h1>{{ titulo | toCapitalize }}</h1>
+    <ul v-for="juego in buscarJuegos">
+      <li>{{ juego.titulo | toCapitalize }}</li>
+    </ul>
+    <input type="range" min="1" max="10" v-model="minimo">
+    <input type="search" v-model="busqueda">
+    
+    <pre>{{ $data }}</pre>
+  </main>
+  <script>
+   
+
+  Vue.filter("toCapitalize", (t) => {
+  t = t.split("");
+  t[0] = t[0].toUpperCase();
+  t = t.join("");
+  return t;
+})
+
+
+  const vm = new Vue({
+    el: "main",
+    data: {
+      titulo: "mejores juegos",
+      busqueda: "",
+      minimo: 5,
+      juegos: [
+        {
+          titulo: "battlefield 1",
+          genero: "FPS",
+          puntuacion: 9
+        },
+            {
+          titulo: "civilization VI",
+          genero: "Estrategia",
+          puntuacion: 10
+        },
+            {
+          titulo: "resident evil 7",
+          genero: "Survival Horror",
+          puntuacion: 7
+        },
+
+      ]
+    },
+    methods: {
+      agregarTarea() {
+        this.tareas.push(this.nuevaTarea);
+      }
+    },
+    computed: {
+      mejoresJuegos() {
+        return this.juegos.filter((juego) => juego.puntuacion > this.minimo);
+      },
+
+      buscarJuegos() {
+        return this.juegos.filter((juego) => juego.titulo.includes(this.busqueda));
+      }
+    }
+
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <title>Data Binding</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{ texto | toCapitalize }}</h2>
+    <button v-on:click="invertirTexto">Invertir texto</button>
+    <pre>{{ $data }}</pre>
+  </div>
+  <main>
+
+    <h2>{{ title | toCapitalize }}</h2>
+    <pre>{{ $data }}</pre>
+  </main>
+  <script>
+   
+
+  Vue.filter("toCapitalize", (t) => {
+  t = t.split("");
+  t[0] = t[0].toUpperCase();
+  t = t.join("");
+  return t;
+});
+
+
+  const vm1 = new Vue({
+    el: "#app",
+    data: {
+      texto: "instancia 1 de Vue"
+      
+    },
+    methods: {
+      invertirTexto() {
+        this.texto = this.texto.split("").reverse().join("");
+
+        vm2.title = "saludos desde la instancia 1"
+      }
+    }
+
+  });
+
+  const vm2 = new Vue({
+    el: "main",
+    data: {
+      title: "instancia 2 de Vue"
+    }
+
+  });
+  </script>
+</body>
+</html>
