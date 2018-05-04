@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <style type="text/css">
+
+    li {cursor: pointer;}
+
+   .completada {
+    text-decoration: line-through;
+    color: #eee;
+   }
+  </style>
+  <title>Data Binding</title>
+</head>
+<body>
+  <main>
+    <h1>{{ titulo | toCapitalize }}</h1>
+    <ul v-for="tarea in tareasPorAntiguedad">
+      <li v-on:click="completarTarea(tarea)" v-bind:class="{completada: tarea.completada}">{{ tarea.titulo }}</li>
+    </ul>
+
+    <pre>{{ $data }}</pre>
+  </main>
+  <script>
+   
+
+  Vue.filter("toCapitalize", (t) => {
+    t = t.split("");
+    t[0] = t[0].toUpperCase();
+    t = t.join("");
+    return t;
+  });
+   
+  const vm = new Vue({
+    el: "main",
+    data: {
+      titulo: "tareas por realizar",
+      tareas: [
+        {
+          titulo: "aprender VueJS",
+          completada: true,
+          antiguedad: 26
+        },
+        {
+          titulo: "aprender PHP7",
+          completada: false,
+          antiguedad: 15
+        },
+        {
+          titulo: "aprender Django",
+          completada: true,
+          antiguedad: 33
+        }
+      ]
+    },
+    methods: {
+      completarTarea(tarea) {
+        tarea.completada = !tarea.completada;
+      }
+    },
+    computed: {
+      tareasPorAntiguedad() {
+        return this.tareas.sort((a, b) => a.antiguedad <= b.antiguedad)
+      }
+    }
+
+  });
+  </script>
+</body>
+</html>

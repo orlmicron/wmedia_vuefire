@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+  <title>Vue-Resources</title>
+</head>
+<body>
+  <main>
+    <img
+      v-for="persona in personas"
+      v-bind:src="persona.picture.thumbnail"
+      v-bind:alt="persona.name.first">
+    <pre>{{ $data }}</pre>
+  </main>
+  <script>
+   
+
+  Vue.filter("toCapitalize", (t) => {
+    t = t.split("");
+    t[0] = t[0].toUpperCase();
+    t = t.join("");
+    return t;
+  });
+
+
+  const vm = new Vue({
+    el: "main",
+    mounted() {
+      this.cargarPersonas();
+    },
+    data: {
+      personas: []
+    },
+    methods: {
+      cargarPersonas() {
+        this.$http.get('https://randomuser.me/api?results=50')
+          .then((respuesta) => {
+            this.personas = respuesta.body.results;
+            console.log(respuesta)});
+      }
+    }
+
+  });
+  </script>
+</body>
+</html>
