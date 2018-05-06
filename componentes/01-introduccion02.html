@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue-Resources</title>
+</head>
+<body>
+  <main>
+    <h1>Lista de tareas con componentes</h1>
+    <mis-tareas></mis-tareas>
+    
+    <add-task></add-task>
+  </main>
+    
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    Vue.filter('toTitle', text => {
+  text = text.split("")
+  text[0] = text[0].toUpperCase()
+  text = text.join("")
+  return text
+})
+
+Vue.component('mis-tareas', {
+  template: `<ul><li v-for="tarea in tareas">{{ tarea.title | toTitle }}</li></ul>`,
+  mounted() {
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+      .then((respuesta) => {
+        this.tareas = respuesta.data;
+      });
+  },
+  data() {
+    return {
+      tareas: []
+    }
+  }
+})
+
+
+Vue.component('add-task', {
+  template: `
+  <ul>
+    <li 
+      v-for="task in completedTask"
+      v-on:click="completeTask(task)" >{{ task.title }}</li>
+  </ul>`,
+  data() {
+    return {
+      tasks: [
+        {
+          title: "Estudiar Vue",
+          completed: true
+        },
+        {
+          title: "Estudiar Python",
+          completed: true
+        },
+        {
+          title: "Dominar ES6",
+          completed: true
+        },
+        {
+          title: "Estudiar Django",
+          completed: true
+        }
+      ]
+    }
+  },
+  computed: {
+    completedTask() {
+      return this.tasks.filter(task => task.completed)
+    }
+  },
+  methods: {
+    completeTask(task) {
+      task.completed = !task.completed
+    }
+  }
+
+})
+
+
+const vm = new Vue({
+  el: "main",
+});
+  </script>
+</body>
+</html>

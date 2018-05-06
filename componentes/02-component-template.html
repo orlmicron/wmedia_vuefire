@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Componentes</title>
+</head>
+<body>
+  <main>
+    <h1>Componentes con Vue</h1>
+    <elegir-ganador :listado="personas" inline-template>
+      <div>
+      <h1 v-if="ganador">El ganador es {{ ganador | toTitle }}</h1>
+      <template v-else>
+        <h1>Participantes</h1>
+        <ul v-for="participante in listado">
+          <li>{{ participante | toTitle }}</li>
+        </ul>
+        <button @click="elegirGanador">Elegir ganador</button>
+      </template>
+      </div>
+    </elegir-ganador>
+
+    
+    <pre>{{ $data }}</pre>
+  </main>
+    
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ <!--  <script type="text/template" id="elegir-ganador-template">
+    <div>
+      <h1 v-if="ganador">El ganador es {{ ganador | toTitle }}</h1>
+      <template v-else>
+        <h1>Participantes</h1>
+        <ul v-for="participante in listado">
+          <li>{{ participante | toTitle }}</li>
+        </ul>
+        <button @click="elegirGanador">Elegir ganador</button>
+      </template>
+    </div>
+  </script> -->
+   <!-- <template id="elegir-ganador-template">
+    <div>
+      <h1 v-if="ganador">El ganador es {{ ganador | toTitle }}</h1>
+      <template v-else>
+        <h1>Participantes</h1>
+        <ul v-for="participante in listado">
+          <li>{{ participante | toTitle }}</li>
+        </ul>
+        <button @click="elegirGanador">Elegir ganador</button>
+      </template>
+    </div>
+  </template> -->
+
+  <script>
+Vue.filter('toTitle', text => {
+  text = text.split("")
+  text[0] = text[0].toUpperCase()
+  text = text.join("")
+  return text
+})
+
+Vue.component('elegir-ganador', {
+  props: ['listado'],
+  //template: "#elegir-ganador-template",
+  /*template: `
+    <div>
+      <h1 v-if="ganador">El ganador es {{ ganador | toTitle }}</h1>
+      <template v-else>
+        <h1>Participantes</h1>
+        <ul v-for="participante in listado">
+          <li>{{ participante | toTitle }}</li>
+        </ul>
+        <button @click="elegirGanador">Elegir ganador</button>
+      </template>
+    </div>
+  `,*/
+  methods: {
+    elegirGanador() {
+      let cantidad = this.participantes.length
+      let indice = Math.floor(Math.random() * cantidad)
+      this.ganador = this.participantes[indice - 1]
+    }
+  },
+  data() {
+    return {
+      ganador: null,
+      participantes: this.listado
+    }
+  }
+})
+
+
+const vm = new Vue({
+  el: "main",
+  data: {
+    personas: ["juan", "alicia", "pedro", "Javier", "marcos"]
+  }
+});
+  </script>
+</body>
+</html>

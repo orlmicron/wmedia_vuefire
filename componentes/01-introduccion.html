@@ -4,16 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <title>Vue-Resources</title>
 </head>
 <body>
+  <h1>Lista de tareas con componentes</h1>
   <main>
-    <ul v-for="tarea in tareasAjax">
-      <li>{{ tarea.title }}</li>
-    </ul>
+    <h2>Tareas Ajax</h2>
+    <mis-tareas :tareas="tareasAjax"></mis-tareas>
+    
+
+    <h2>Tareas Locales</h2>
+    <mis-tareas :tareas="tareasLocales"></mis-tareas>
+
+    <pre>{{ $data }}</pre>
   </main>
-  <script src="01-main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    Vue.component('mis-tareas', {
+    props: ['tareas'],
+    template: `<ul><li v-for="tarea in tareas">{{ tarea.title }}</li></ul>`,
+
+})
+
+
+const vm = new Vue({
+  el: "main",
+  mounted() {
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+      .then((respuesta) => {
+        this.tareasAjax = respuesta.data;
+      });
+  },
+  data: {
+    tareasAjax: [],
+    tareasLocales: [
+      {title: "Estudiar Vue"},
+      {title: "Estudiar Python"},
+      {title: "Dominar ES6"},
+      {title: "Estudiar Django"}
+    ]
+  },
+});
+  </script>
 </body>
 </html>

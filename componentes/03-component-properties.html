@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Componentes</title>
+</head>
+<body>
+  <main>
+    <h1>Componentes con Vue</h1>
+    <author :author-name="fullName"></author>
+
+    
+    <pre>{{ $data }}</pre>
+  </main>
+    
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+ 
+
+  <script>
+Vue.filter('toTitle', text => {
+  text = text.split("")
+  text[0] = text[0].toUpperCase()
+  text = text.join("")
+  return text
+})
+
+Vue.component('author', {
+  props: ['authorName'],
+  template: `
+    <h1>Welcome {{ authorName }}</h1>
+  `,
+  mounted() {
+    // Las props son accesibles desde this (proxy)
+    console.log(this.authorName)
+  },
+  methods: {
+    elegirGanador() {
+      let cantidad = this.participantes.length
+      let indice = Math.floor(Math.random() * cantidad)
+      this.ganador = this.participantes[indice - 1]
+    }
+  },
+  data() {
+    return {
+      ganador: null,
+      participantes: this.listado
+    }
+  }
+})
+
+
+const vm = new Vue({
+  el: "main",
+  data: {
+    author: {
+      firstName: "Orlando",
+      lastName: "Monteverde"
+    }
+  },
+  computed: {
+    fullName() {
+      return `${this.author.firstName} ${this.author.lastName}`
+    }
+  }
+});
+  </script>
+</body>
+</html>
