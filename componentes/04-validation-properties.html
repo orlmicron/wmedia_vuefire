@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Componentes</title>
+</head>
+<body>
+  <main>
+    <h1>Componentes con Vue</h1>
+    <candidato v-for="candidato in candidatos"
+              :nombre="candidato.name.first"
+              :correoe="candidato.email"
+              :imagen="candidato.picture.thumbnail"
+              :location="candidato.location"
+              :key="candidato.id.value">
+      
+    </candidato>
+    
+
+    <pre>{{ $data }}</pre>
+    
+  </main>
+  <template id="candidato-template">
+    <blockquote>
+      <img v-bind:src="imagen" align="right" :alt="nombre">
+      <h1>{{ nombre }}</h1>
+      <h2>{{ correoe }}</h2>
+      <ul v-for="(value, key, index) in location">
+        <li>{{ value }}</li>
+      </ul>
+      <hr>
+    </blockquote>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ 
+
+  <script>
+Vue.filter('toTitle', text => {
+  text = text.split("")
+  text[0] = text[0].toUpperCase()
+  text = text.join("")
+  return text
+})
+
+Vue.component('candidato', {
+  props: {
+    nombre: {type: String, required: true},
+    correoe: {type: String, default: "Doe"},
+    imagen: {type: String, default: "empty"},
+    location: {
+      type: Object,
+      default() {
+        return {
+          ciudad: "Valencia"
+        }
+      }
+    }
+  },
+  template: '#candidato-template',  
+})
+
+const vm = new Vue({
+  el: "main",
+  mounted() {
+    this.obtenerCandidatos()
+  },
+  data: {
+    candidatos: [],
+  },
+  methods: {
+    obtenerCandidatos() {
+      axios.get('https://randomuser.me/api/?results=100')
+          .then((respuesta) => {
+            this.candidatos = respuesta.data.results
+        })
+    }
+  }
+})
+
+  </script>
+</body>
+</html>

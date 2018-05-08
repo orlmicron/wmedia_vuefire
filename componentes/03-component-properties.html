@@ -36,23 +36,10 @@ Vue.component('author', {
     // Las props son accesibles desde this (proxy)
     console.log(this.authorName)
   },
-  methods: {
-    elegirGanador() {
-      let cantidad = this.participantes.length
-      let indice = Math.floor(Math.random() * cantidad)
-      this.ganador = this.participantes[indice - 1]
-    }
-  },
-  data() {
-    return {
-      ganador: null,
-      participantes: this.listado
-    }
-  }
 })
 
 
-const vm = new Vue({
+new Vue({
   el: "main",
   data: {
     author: {

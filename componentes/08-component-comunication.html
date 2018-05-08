@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Componentes</title>
+  <style>
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    width: 700px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+hr, pre {
+    flex-basis: 100%;
+
+}
+  </style>
+</head>
+<body>
+    <h1>Componentes con Vue</h1>
+  <main>
+    <listado-productos :productos="productos"></listado-productos>
+    <carrito-compra></carrito-compra>
+    <hr>
+
+    <pre>{{ $data }}</pre>
+  </main>
+    
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+ 
+
+  <script>
+Vue.filter('toTitle', text => {
+  text = text.split("")
+  text[0] = text[0].toUpperCase()
+  text = text.join("")
+  return text
+})
+
+
+Vue.component('listado-productos', {
+  props: ['productos'],
+  template: `
+    <section>
+      <ul>
+        <li v-for="producto in productos">
+          {{ producto.nombre }} -
+          <small>{{ producto.precio.toFixed(2) }}</small>
+          <button @click="eliminarProducto(producto.precio)"></button>
+          <button @click="anadirProducto(producto.precio)"></button>
+        </li>
+      </ul>
+    </section>
+    `,
+  data() {
+    return {
+      total: 0,
+      cantidadProductos: 0
+    }
+  },
+  methods: {
+    anadirProducto(precio) {
+
+    },
+    eliminarProducto(precio) {
+
+    }
+  },
+})
+
+
+Vue.component('carrito-compra', {
+  template: `
+    <template>
+      <h1>{{ total.toFixed(2) }}</h1>
+      <h2>{{ cantidadProductos }} Productos</h2>
+    </template>
+  `,
+  data() {
+    return {
+      total: 0,
+      cantidadProductos: 0
+    }
+  }
+})
+
+
+const vm = new Vue({
+  el: "main",
+  data: {
+    productos: [
+      {nombre: "Libro ES6", precio: 39},
+      {nombre: "Portatil", precio: 1300},
+      {nombre: "Cafe", precio: 2},
+      {nombre: "Auriculares", precio: 80},
+      {nombre: "Moleskine", precio: 19},
+    ]
+  }
+})
+
+  </script>
+</body>
+</html>
