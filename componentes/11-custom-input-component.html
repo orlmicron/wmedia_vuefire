@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <title>Componentes</title>
+</head>
+<body>
+  <main>
+    <!-- <input type="text" v-model="password">
+   -->
+    <!--<input type="text" :value="password" @input=" password = $event.target.value" />-->
+    <password :password="password" v-model="password"></password>
+
+    <pre>{{ $data }}</pre>
+  </main>
+    
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+ 
+  <script>
+Vue.filter('toTitle', text => {
+  text = text.split("")
+  text[0] = text[0].toUpperCase()
+  return text.join("")
+})
+
+Vue.component('password', {
+  props: ['password'],
+  template: `<input type="password" :value="password" @input="validarContrasena($event.target.value)" ref="pass" />`,
+  methods: {
+    validarContrasena(password) {
+      if (this.noValidas.includes(password)) {
+        this.$refs.pass.value = password = ''
+        
+      }
+      this.$emit("input", password)
+    }
+  },
+  data() {
+    return {
+      noValidas: ["abc", "admin", "root", "123456"]
+    }
+  }
+})
+
+const vm = new Vue({
+  el: 'main',
+  data: {
+    password: "M15u93r9455w0rd"
+  }
+})
+
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <style>
+    html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.cabecera {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cabecera slot {
+    flex-basis: 40%;
+}
+
+.cabecera input {
+    flex-basis: 60%;
+}
+
+.usuarios {
+    margin: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.usuario {
+    padding: 10px;
+    flex-basis: 33%;
+    border: 1px solid gray;
+    border-radius: 10px;
+    display: flex;
+}
+
+.usuario img {
+    flex-basis: 33%;
+}
+
+.usuario section {
+    flex-basis: 66%;
+}
+
+pre {
+    flex-basis: 100%;
+}
+  </style>
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-content>
+        <v-container>
+          <usuarios>
+            <h1>Usuarios de mi Startup</h1>
+          </usuarios>
+        </v-container>
+      </v-content>
+    </v-app>
+  <pre>{{ $data }}</pre>
+  </div>
+
+  <template id="usuarios-template">
+    <div>
+      <section class="cabecera">
+        <slot></slot>
+        <input type="search" placeholder="Filtrar usuarios" v-model="busqueda">
+      </section>
+      <hr>
+      <section class="usuarios">
+        <usuario v-for="(usuario, index) in filtrarUsuarios" :datos="usuario" :key="index"></usuario>
+      </section>
+    </div>
+  </template>
+
+  <template id="usuario-template">
+    <div class="usuario">
+      <img align="left" :src="datos.foto" :alt="datos.nombre">
+      <section>
+        <h1>{{ datos.nombre }}</h1>
+        <small>{{ datos.correoe }}</small>
+      </section>
+    </div>
+  </template>
+
+ 
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+  <script>
+    Vue.component("usuarios", {
+      template: "#usuarios-template",
+      created() {
+        axios.get("https://randomuser.me/api?results=50")
+          .then((respuesta) => {
+            console.log(respuesta.data.results)
+            const listado = respuesta.data.results.map((usuario) => {
+              return {
+                nombre: `${usuario.name.title} ${usuario.name.first} ${usuario.name.last}`,
+                correoe: usuario.email,
+                foto: usuario.picture.medium
+              }
+            })
+            this.usuarios = listado
+          })
+      },
+      data() {
+        return {
+          usuarios: [],
+          busqueda: '',
+        }
+      },
+      computed: {
+        filtrarUsuarios() {
+          return this.usuarios.filter(usuario => usuario.nombre.includes(this.busqueda))
+        }
+      }
+    })
+
+
+    Vue.component('usuario', {
+      props: ["datos"],
+      template: "#usuario-template"
+    })
+
+    const vm = new Vue({
+      el: '#app',
+
+    })
+  </script>
+</body>
+</html>

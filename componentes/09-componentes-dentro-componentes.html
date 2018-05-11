@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Componentes</title>
+</head>
+<body>
+  <main>
+    <lista-tareas :tareas="tareas">
+      Tareas que necesito finalizar ¡ya!
+    </lista-tareas>
+
+    <pre>{{ $data }}</pre>
+  </main>
+    
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+ 
+
+  <script>
+Vue.filter('toTitle', text => {
+  text = text.split("")
+  text[0] = text[0].toUpperCase()
+  return text.join("")
+  //return text
+})
+
+Vue.component('lista-tareas', {
+  props: ['tareas'],
+  template: `
+    <div>
+      <h1><slot></slot></h1>
+      <ul>
+        <tarea v-for="(tarea, index) in tareas" :tarea="tarea" :key="index"></tarea>
+      </ul>
+    </div>`,
+})
+
+
+Vue.component("tarea", {
+  props: ['tarea'],
+  template: `<li>{{ tarea | toTitle }}</li>`
+})
+
+
+const vm = new Vue({
+  el: 'main',
+  data: {
+    tareas: [
+      'finalizar seccion Componentes',
+      'iniciar workflow con Vue CLI y Webpack',
+      'terminar de estudiar la documentacion de Vuex',
+      'seguir jugando con Vue Router y grabar el primer video',
+    ]
+  }
+})
+
+
+
+  </script>
+</body>
+</html>
