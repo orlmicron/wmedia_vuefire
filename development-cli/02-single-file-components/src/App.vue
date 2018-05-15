@@ -1,10 +1,9 @@
 <template>
   <div>
-    
-  <persona></persona>
-  <persona></persona>
-  <persona></persona>
-  <persona></persona>
+    <persona></persona>
+    <persona></persona>
+    <persona></persona>
+    <persona></persona>
   </div>
 </template>
 

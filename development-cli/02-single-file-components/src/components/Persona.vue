@@ -5,7 +5,7 @@
 			<h2 v-text="datosPersona.correoe"></h2>
 			<img :src="datosPersona.foto" :alt="datosPersona.nombre">
 		</template>
-		<span v-else>Cargando persona...</span>
+		<div v-else class="spinner"></div>
 	</div>
 </template>
 
@@ -35,4 +35,20 @@
 	}
 </script>
 
-<style></style>
+<style>
+.spinner {
+  width: 40px;
+  height: 40px;
+  background-color: #333;
+
+  margin: 100px auto;
+  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+  animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-rotateplane {
+  0% { -webkit-transform: perspective(120px) }
+  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+</style>
